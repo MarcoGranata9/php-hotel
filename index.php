@@ -56,11 +56,22 @@ $hotel_filter = [];
     <div class="container-xl">
         <h1 class="p-5 text-center">Tabella Hotel</h1>
         <form action="index.php" method="GET" class="py-3">
+
             <label for="parking" class="fw-bold">Filtro Parcheggio:</label>
             <select name="parking" id="parking">
                 <option value="" selected>Scegli un' opzione</option>
-                <option value="true">Con Parcheggio</option>
-                <option value="false">Senza Parcheggio</option>
+                <option value="1">Con Parcheggio</option>
+                <option value="0">Senza Parcheggio</option>
+            </select>
+
+            <label for="vote">Filtro Voto:</label>
+            <select name="vote" id="vote">
+                <option value="" selected>Scegli un' opzione</option>
+                <option value="1">1 Stella</option>
+                <option value="2">2 Stelle</option>
+                <option value="3">3 Stelle</option>
+                <option value="4">4 Stelle</option>
+                <option value="5">5 Stelle</option>
             </select>
             <?php var_dump($_GET) ?>
             <button type="submit">Invia</button>
@@ -77,31 +88,38 @@ $hotel_filter = [];
                 </tr>
             </thead>
             <tbody class="table-group-divider">
-                <?php if ($_GET["parking"] === "true") {
-                $hotel_filter = array_filter($hotels, function($hotel) {
-                       return $hotel["parking"] === true;
-                    });
-                    var_dump($hotel_filter);
-                } elseif ($_GET["parking"] === "false") {
-                    $hotel_filter = array_filter($hotels, function($hotel) {
-                        return $hotel["parking"] === false;
-                    });
-                    var_dump($hotel_filter);
-                } else {
-                    $hotel_filter = $hotels;
-                    var_dump($hotel_filter);
-                }
-                 ?>
-                <?php foreach ($hotel_filter as $key => $hotel) { ?>
-                    <tr>
+                <?php
+                    // Mia soluzione
+                    if ($_GET["vote"] !== "") {
+                        $hotel_filter = array_filter($hotels, function($hotel) {
+                            return $hotel["vote"] >= $_GET["vote"];
+                            });
+                            var_dump($hotel_filter);
+                    } elseif ($_GET["parking"] === "true") {
+                        $hotel_filter = array_filter($hotels, function($hotel) {
+                        return $hotel["parking"] === true;
+                        });
+                    } elseif ($_GET["parking"] === "false") {
+                        $hotel_filter = array_filter($hotels, function($hotel) {
+                            return $hotel["parking"] === false;
+                        });
+                    } else {
+                        $hotel_filter = $hotels;
+                    }
+                ?>
+                <?php foreach ($hotel_filter as $key => $hotel) {
+                    // Ticket
+                    if ($_GET["parking"] == $hotel["parking"] && $_GET["vote"] >= $hotel["vote"]) {
+                ?>
+                        <tr>
                             <th scope="row"><?php echo $key + 1; ?></th>
                             <td><?php echo $hotel["name"] ?></td>
                             <td><?php echo $hotel["description"] ?></td>
                             <td><?php echo $hotel["parking"] ?></td>
                             <td><?php echo $hotel["vote"] ?></td>
                             <td><?php echo $hotel["distance_to_center"] ?></td>
-                    </tr>
-                <?php } ?>
+                        </tr>
+                <?php }} ?>
             </tbody>
         </table>
     </div>

@@ -1,4 +1,4 @@
-<?php     
+<?php
 $hotels = [
     [
         'name' => 'Hotel Belvedere',
@@ -40,20 +40,48 @@ $hotels = [
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-</head>
-<body>
-    <?php foreach ($hotels as $hotel) { ?>
-        <div>
-            <h1>Hotel</h1>
-            <?php foreach ($hotel as $hotel_elem) { ?>
-                <p><?php echo $hotel_elem ?></p>
-            <?php }?>    
-        </div>
-    <?php } ?>
 
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container-xl">
+        <h1 class="p-5 text-center">Tabella Hotel</h1>
+        <table class="table table-striped table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Parking</th>
+                    <th scope="col">Vote</th>
+                    <th scope="col">Distance to center</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <?php foreach ($hotels as $key => $hotel) { ?>
+                    <tr>
+                            <th scope="row"><?php echo $key + 1; ?></th>
+                            <td><?php echo $hotel["name"] ?></td>
+                            <td><?php echo $hotel["description"] ?></td>
+                            <td><?php echo $hotel["parking"] ?></td>
+                            <td><?php echo $hotel["vote"] ?></td>
+                            <td><?php echo $hotel["distance_to_center"] ?></td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+            </table>
+    </div>
+
+
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
+
 </html>

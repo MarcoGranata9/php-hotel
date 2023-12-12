@@ -36,6 +36,8 @@ $hotels = [
         'distance_to_center' => 50
     ],
 ];
+
+$hotel_filter = [];
 ?>
 
 <!DOCTYPE html>
@@ -53,6 +55,16 @@ $hotels = [
 <body>
     <div class="container-xl">
         <h1 class="p-5 text-center">Tabella Hotel</h1>
+        <form action="index.php" method="GET" class="py-3">
+            <label for="parking" class="fw-bold">Filtro Parcheggio:</label>
+            <select name="parking" id="parking">
+                <option value="" selected>Scegli un' opzione</option>
+                <option value="true">Con Parcheggio</option>
+                <option value="false">Senza Parcheggio</option>
+            </select>
+            <?php var_dump($_GET) ?>
+            <button type="submit">Invia</button>
+        </form>
         <table class="table table-striped table-hover table-bordered">
             <thead>
                 <tr>
@@ -65,7 +77,22 @@ $hotels = [
                 </tr>
             </thead>
             <tbody class="table-group-divider">
-                <?php foreach ($hotels as $key => $hotel) { ?>
+                <?php if ($_GET["parking"] === "true") {
+                $hotel_filter = array_filter($hotels, function($hotel) {
+                       return $hotel["parking"] === true;
+                    });
+                    var_dump($hotel_filter);
+                } elseif ($_GET["parking"] === "false") {
+                    $hotel_filter = array_filter($hotels, function($hotel) {
+                        return $hotel["parking"] === false;
+                    });
+                    var_dump($hotel_filter);
+                } else {
+                    $hotel_filter = $hotels;
+                    var_dump($hotel_filter);
+                }
+                 ?>
+                <?php foreach ($hotel_filter as $key => $hotel) { ?>
                     <tr>
                             <th scope="row"><?php echo $key + 1; ?></th>
                             <td><?php echo $hotel["name"] ?></td>
@@ -76,7 +103,7 @@ $hotels = [
                     </tr>
                 <?php } ?>
             </tbody>
-            </table>
+        </table>
     </div>
 
 
